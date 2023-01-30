@@ -58,14 +58,12 @@ def distance_thresholding(A, dist, hemiid, nbins):
             D_lower = D >= distbins[ibin]
             D_upper = D < distbins[ibin + 1]
             frac = round((tgt * np.sum(np.logical_and(D_lower, D_upper))) / len(D))
-            print(frac)
             
             # mask out connections not in current bin to consensus matrix
             c = np.triu(np.logical_and(dist >= distbins[ibin], dist < distbins[ibin + 1])) * C * d
             
             # sort connections in descending order by how frequently they appear in each subject
             sorted_idx = np.argsort(c, axis=None, kind='quicksort', order=None)[::-1]
-            print(np.count_nonzero(c))
             
             # keep connections up until frac
             G[sorted_idx[:frac]] = 1
